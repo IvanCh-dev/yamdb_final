@@ -1,7 +1,5 @@
-from rest_framework import serializers
-
 from django.core.exceptions import ValidationError
-
+from rest_framework import serializers
 from users.models import User
 
 
@@ -13,7 +11,7 @@ class ValidationUser:
             raise ValidationError('поле username не заполненно')
         if User.objects.filter(username=value).exists():
             raise serializers.ValidationError('username занято')
-        elif value == 'me':
+        if value == 'me':
             raise ValidationError('me недопустимо в username')
         return value
 
