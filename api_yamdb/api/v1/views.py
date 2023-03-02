@@ -5,8 +5,8 @@ from api.v1.serializers import (CategorySerializer, CommentSerializer,
                                 GenreSerializer, ReviewSerializer,
                                 TitleGetSerializer, TitlePostSerializer)
 from django.db.models import Avg
-from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 from reviews.models import Category, Genre, Review, Title
@@ -36,8 +36,7 @@ class TitleViewSet(viewsets.ModelViewSet):
         return TitleGetSerializer
 
     def get_queryset(self):
-        queryset = Title.objects.annotate(rating=Avg('reviews__score'))
-        return queryset
+        return Title.objects.annotate(rating=Avg('reviews__score'))
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
@@ -47,9 +46,8 @@ class ReviewViewSet(viewsets.ModelViewSet):
     pagination_class = PageNumberPagination
 
     def get_queryset(self):
-        queryset = get_object_or_404(
+        return get_object_or_404(
             Title, id=self.kwargs.get('title_id')).reviews.all()
-        return queryset
 
     def perform_create(self, serializer):
         title = get_object_or_404(Title, id=self.kwargs.get('title_id'))
@@ -63,10 +61,9 @@ class CommentViewSet(viewsets.ModelViewSet):
     pagination_class = PageNumberPagination
 
     def get_queryset(self):
-        queryset = get_object_or_404(
+        return get_object_or_404(
             Review, id=self.kwargs.get('review_id'),
             title=self.kwargs.get('title_id')).comments.all()
-        return queryset
 
     def perform_create(self, serializer):
         review = get_object_or_404(Review, id=self.kwargs.get('review_id'),
