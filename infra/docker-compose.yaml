@@ -6,7 +6,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
-      - ./.env
+      - .env
   web:
     image: ivanchdev/api_yamdb:v1
     volumes:
@@ -15,7 +15,7 @@ services:
     depends_on:
       - db
     env_file:
-      - ./.env
+      - .env
 
   nginx:
     image: nginx:1.21.3-alpine
